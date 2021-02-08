@@ -1,0 +1,38 @@
+﻿@model InputRatesViewModel
+@{
+    ViewBag.Title = "Calculate";
+}
+
+<h2>Calculate</h2>
+<form id="calculateConversionRate">
+    <table>
+        <tr>
+            @Html.LabelFor(model => model.FirstCurrency, new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(model => model.FirstCurrency, new SelectList(Model.CurrenciesToSelect, "Value", "Text"), "- Please Select -")
+        </tr>
+        <tr>
+            @Html.LabelFor(model => model.Value, new { @class = "control-label col-md-2" })
+            @Html.TextBoxFor(model => model.Value)
+        </tr>
+        <tr>
+            @Html.LabelFor(model => model.SecondCurrency, new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(model => model.SecondCurrency, new SelectList(Model.CurrenciesToSelect, "Value", "Text"), "- Please Select -")
+        </tr>
+    </table>
+    <input id="btnsubmit" type="button" value="Submit" />
+</form>  
+<script>
+
+    $(document).ready(function () {
+        $("#btnsubmit").click(function (e) {
+            var data = $("#calculateConversionRate").serialize();
+            $.ajax({
+                url: "/Rates/CalculateRates",
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: data
+            });
+        });
+    });
+</script>
