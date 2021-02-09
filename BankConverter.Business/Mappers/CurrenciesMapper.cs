@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace BankConverter.Business.Mappers
 {
-    public static class RateMapper
+    public static class CurrenciesMapper
     {
-        public static List<GetAllRatesViewModel> MapToViewModel(List<RateItem> rateItems)
+        public static List<GetAllCurrenciesViewModel> MapToViewModel(List<CurrencyItem> rateItems)
         {
-            var result = new List<GetAllRatesViewModel>();
+            var result = new List<GetAllCurrenciesViewModel>();
 
             foreach (var item in rateItems)
             {
@@ -18,9 +18,9 @@ namespace BankConverter.Business.Mappers
             return result;
         }
 
-        private static GetAllRatesViewModel MapToViewModel(RateItem rateItem)
+        private static GetAllCurrenciesViewModel MapToViewModel(CurrencyItem rateItem)
         {
-            return new GetAllRatesViewModel
+            return new GetAllCurrenciesViewModel
             {
                 Currency = rateItem.Currency,
                 Value = rateItem.Value.ToString()

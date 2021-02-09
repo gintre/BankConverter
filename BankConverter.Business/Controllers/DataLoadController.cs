@@ -1,21 +1,22 @@
-﻿using BankConverter.Business.Logic.Interfaces;
+﻿using System.Threading.Tasks;
+using BankConverter.Business.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace BankConverter.Business.Controllers
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
-    public class RateController : Controller
+    [Route("api/[controller]/[action]")]
+    public class DataLoadController : Controller
     {
         private readonly IDataLoadLogic _dataLoadLogic;
-        public RateController(IDataLoadLogic dataLoadLogic)
+
+        public DataLoadController(IDataLoadLogic dataLoadLogic)
         {
             _dataLoadLogic = dataLoadLogic;
         }
 
         [HttpGet]
-        public async Task<IActionResult> CalculateRates()
+        public async Task<IActionResult> GetAllCurrencies()
         {
             try
             {
@@ -23,7 +24,7 @@ namespace BankConverter.Business.Controllers
 
                 return Ok(result);
             }
-            catch
+            catch 
             {
                 return BadRequest("Error unknown");
             }

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace BankConverter.Business.Logic.Interfaces
 {
-    public interface IRatesLogic
+    public interface IDataLoadLogic
     {
-        Task<List<GetAllRatesViewModel>> LoadRates();
+        Task<List<GetAllCurrenciesViewModel>> LoadCurrencies();
     }
 }

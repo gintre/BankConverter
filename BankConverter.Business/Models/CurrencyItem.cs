@@ -1,6 +1,6 @@
 ﻿namespace BankConverter.Business.Models
 {
-    public class RateItem
+    public class CurrencyItem
     {
         public decimal Value { get; set; }
 

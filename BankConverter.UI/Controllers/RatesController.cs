@@ -17,27 +17,33 @@ namespace BankConverter.UI.Controllers
         public async Task<IActionResult> LoadRates()
         {
             var httpClient = new HttpClient();
+            var result = new InputRatesViewModel();
+            try
+            {
+                var response = await httpClient.GetAsync("https://localhost:44302/api/DataLoad/GetAllCurrencies");
 
-            var response = await httpClient.GetAsync("https://localhost:44302/rate/GetAllRates");
+                var rates = JsonSerializer.Deserialize<List<GetAllRatesViewModel>>(response.Content.ReadAsStringAsync().Result);
 
-            var rates = JsonSerializer.Deserialize<List<GetAllRatesViewModel>>(response.Content.ReadAsStringAsync().Result);
-
-            var result = new InputRatesViewModel()
-            { 
-                Rates = rates,
-                CurrenciesToSelect = rates.
-                    Select(i => new SelectListItem()
-                    {
-                        Text = i.Currency.ToString(),
-                        Value = i.Currency
-                    })
-            };
+                result.Rates = rates;
+                result.CurrenciesToSelect = rates.
+                        Select(i => new SelectListItem()
+                        {
+                            Text = i.Currency.ToString(),
+                            Value = i.Currency
+                        });
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = "Error loading data"});
+            }
 
             return View(result);
         }
 
         public async Task<IActionResult> CalculateRates(InputRatesViewModel input)
         {
+            var httpClient = new HttpClient();
+
             return View();
         }
     }

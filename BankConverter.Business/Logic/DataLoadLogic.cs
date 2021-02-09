@@ -1,5 +1,4 @@
-﻿using BankConverter.Business.Exceptions;
-using BankConverter.Business.Logic.Interfaces;
+﻿using BankConverter.Business.Logic.Interfaces;
 using BankConverter.Business.Mappers;
 using BankConverter.Business.Models;
 using BankConverter.Business.Utils.Constants;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -18,29 +16,29 @@ using System.Xml.Linq;
 
 namespace BankConverter.Business.Logic
 {
-    public class RatesLogic : IRatesLogic
+    public class DataLoadLogic : IDataLoadLogic
     {
 
         private readonly IMemoryCache _cache;
         private readonly IConfiguration _config;
         private static readonly SemaphoreSlim GetUsersSemaphore = new SemaphoreSlim(1, 1);
-        public RatesLogic(IMemoryCache memoryCache, IConfiguration config)
+        public DataLoadLogic(IMemoryCache memoryCache, IConfiguration config)
         {
             _cache = memoryCache;
             _config = config;
         }
 
-        public async Task<List<GetAllRatesViewModel>> LoadRates()
+        public async Task<List<GetAllCurrenciesViewModel>> LoadCurrencies()
         {
-                var rates = await GetRatesFromCache(ConfigurationConstants.RatesCacheKey, GetUsersSemaphore, () => GetRatesFromUrl());
-                return RateMapper.MapToViewModel(rates);
+                var rates = await GetCurrenciesFromCache(ConfigurationConstants.CurrenciesCacheKey, GetUsersSemaphore, () => GetCurrenciesFromUrl());
+                return CurrenciesMapper.MapToViewModel(rates);
         }
 
-        private async Task<List<RateItem>> GetRatesFromUrl()
+        private async Task<List<CurrencyItem>> GetCurrenciesFromUrl()
         {
             var httpClient = new HttpClient();
-
-            var response = await httpClient.GetAsync(_config.GetValue<string>("BusinessConstants:RatesUrl"));
+            
+            var response = await httpClient.GetAsync(_config.GetValue<string>("BusinessConstants:CurrenciesUrl"));
 
             var result = await response.Content.ReadAsStringAsync();
 
@@ -48,10 +46,10 @@ namespace BankConverter.Business.Logic
             var matchingElements = doc.Descendants()
                           .Where(x => x.Attribute("currency") != null);
 
-            var ratesList = new List<RateItem>();
+            var ratesList = new List<CurrencyItem>();
             foreach (var item in matchingElements)
             {
-                ratesList.Add(new RateItem
+                ratesList.Add(new CurrencyItem
                 {
                     Currency = item.Attribute("currency").Value,
                     Value = Convert.ToDecimal(item.Attribute("rate").Value, new CultureInfo("en-US"))
@@ -61,22 +59,22 @@ namespace BankConverter.Business.Logic
             return ratesList;
         }
 
-        private async Task<List<RateItem>> GetRatesFromCache(string cacheKey, SemaphoreSlim semaphore, Func<Task<List<RateItem>>> func)
+        private async Task<List<CurrencyItem>> GetCurrenciesFromCache(string cacheKey, SemaphoreSlim semaphore, Func<Task<List<CurrencyItem>>> func)
         {
-            var rates = _cache.Get<List<RateItem>>(cacheKey);
+            var rates = _cache.Get<List<CurrencyItem>>(cacheKey);
 
             if (rates != null) return rates;
             try
             {
                 await semaphore.WaitAsync();
 
-                rates = _cache.Get<List<RateItem>>(cacheKey);
+                rates = _cache.Get<List<CurrencyItem>>(cacheKey);
 
                 if (rates != null) return rates;
                 rates = await func();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(GetRatesReloadTime()));
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(GetCurrenciesReloadTime()));
 
                 _cache.Set(cacheKey, rates, cacheEntryOptions);
             }
@@ -88,10 +86,10 @@ namespace BankConverter.Business.Logic
             return rates;
         }
 
-        private int GetRatesReloadTime()
+        private int GetCurrenciesReloadTime()
         {
-            var defaultTimeValue = ConfigurationConstants.DefaultRatesReload;
-            var timeFromCache = _config.GetValue<int>("BusinessConstants:ReloadRatesInMinutes");
+            var defaultTimeValue = ConfigurationConstants.DefaultCurrenciesReload;
+            var timeFromCache = _config.GetValue<int>("BusinessConstants:ReloadCurrenciesInMinutes");
 
 
             return (timeFromCache > 0) ? timeFromCache : defaultTimeValue;

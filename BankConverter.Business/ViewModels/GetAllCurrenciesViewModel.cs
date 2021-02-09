@@ -1,6 +1,6 @@
 ﻿namespace BankConverter.Business.ViewModels
 {
-    public class GetAllRatesViewModel
+    public class GetAllCurrenciesViewModel
     {
         public string Currency { get; set; }
 

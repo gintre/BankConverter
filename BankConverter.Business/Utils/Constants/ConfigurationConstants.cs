@@ -2,7 +2,7 @@
 {
     public static class ConfigurationConstants
     {
-        public const string RatesCacheKey = "_Rates";
-        public const int DefaultRatesReload = 10;
+        public const string CurrenciesCacheKey = "_Currencies";
+        public const int DefaultCurrenciesReload = 10;
     }
 }
