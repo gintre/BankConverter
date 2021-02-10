@@ -1,4 +1,5 @@
-﻿using BankConverter.Business.Logic.Interfaces;
+﻿using BankConverter.Business.Exceptions;
+using BankConverter.Business.Logic.Interfaces;
 using BankConverter.Business.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -23,6 +24,10 @@ namespace BankConverter.Business.Controllers
                 var result = await _rateLogic.CalculateRates(calculateRatesInputModel);
 
                 return Ok(result);
+            }
+            catch (CurrencyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch
             {

@@ -1,4 +1,5 @@
-﻿using BankConverter.Business.Logic.Interfaces;
+﻿using BankConverter.Business.Exceptions;
+using BankConverter.Business.Logic.Interfaces;
 using BankConverter.Business.Mappers;
 using BankConverter.Business.Models;
 using BankConverter.Business.ViewModels;
@@ -19,25 +20,47 @@ namespace BankConverter.Business.Logic
         {
             var firstCurrency = await _dataLoadLogic.GetCurrency(calculateRatesInputModel.FirstCurrency);
             var secondCurrency = await _dataLoadLogic.GetCurrency(calculateRatesInputModel.SecondCurrency);
+            if (firstCurrency == null || secondCurrency == null)
+            {
+                throw new CurrencyNotFoundException();
+            }
 
             var rateCalculation = new RateCalculation()
             {
                 RateValue = CaclulateRateValue(firstCurrency.Value, secondCurrency.Value, calculateRatesInputModel.Value),
-                Rate = CaclulateRateValue(firstCurrency.Value, secondCurrency.Value)
+                Rate = CaclulateRate(firstCurrency.Value, secondCurrency.Value)
             };
 
             return RateMapper.MapToViewModel(rateCalculation, calculateRatesInputModel);
         }
 
-        private decimal CaclulateRateValue(decimal rateFrom, decimal rateTo, decimal amount)
+        public decimal CaclulateRateValue(decimal rateFrom, decimal rateTo, decimal amount)
         {
-            var rateValue = (amount / rateFrom) * rateTo;
+            decimal rateValue = 0;
+            try
+            {
+                rateValue = (amount / rateFrom) * rateTo;
+            }
+            catch
+            {
+                throw new DivideByZeroException();
+            }
+
             return Math.Round(rateValue, 2);
         }
 
-        private decimal CaclulateRateValue(decimal rateFrom, decimal rateTo)
+        public decimal CaclulateRate(decimal rateFrom, decimal rateTo)
         {
-            var rate = (rateTo / rateFrom);
+            decimal rate = 0;
+            try
+            {
+                rate = (rateTo / rateFrom);
+            }
+            catch
+            {
+                throw new DivideByZeroException();
+            }
+
             return Math.Round(rate, 4);
         }
     }
