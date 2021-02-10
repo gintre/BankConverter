@@ -1,10 +1,6 @@
-﻿using BankConverter.Business.Logic;
-using BankConverter.Business.Logic.Interfaces;
+﻿using BankConverter.Business.Logic.Interfaces;
 using BankConverter.Business.Models;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BankConverter.Tests.TestsHelpers
 {
@@ -14,13 +10,13 @@ namespace BankConverter.Tests.TestsHelpers
         {
             var dataLoadLogicMock = Substitute.For<IDataLoadLogic>();
 
-            var firstCurrency = new CurrencyItem()
+            var firstCurrency = new CurrencyItem
             {
                 Currency = "USD",
                 Value = (decimal)1.2017
             };
 
-            var secondCurrency = new CurrencyItem()
+            var secondCurrency = new CurrencyItem
             {
                 Currency = "JPY",
                 Value = (decimal)126.25

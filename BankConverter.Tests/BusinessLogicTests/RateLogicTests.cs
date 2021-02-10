@@ -13,11 +13,11 @@ namespace BankConverter.Tests
         private RateLogic _rateLogic;
 
         [Fact]
-        public async Task CalculateRatesTest_WhenDataValid_ReturnRateObject()
+        public async Task CalculateRates_WhenDataValid_ReturnRateObject()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());
-            var request = new CalculateRatesInputModel()
+            var request = new CalculateRatesInputModel
             {
                 FirstCurrency = "USD",
                 SecondCurrency = "JPY",
@@ -36,11 +36,11 @@ namespace BankConverter.Tests
         }
 
         [Fact]
-        public async Task CalculateRatesTest_WhenCurrencyDoesntExist_ReturnException()
+        public async Task CalculateRates_WhenCurrencyDoesntExist_ReturnException()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());
-            var request = new CalculateRatesInputModel()
+            var request = new CalculateRatesInputModel
             {
                 FirstCurrency = "USD",
                 SecondCurrency = "AAA",
@@ -52,7 +52,7 @@ namespace BankConverter.Tests
         }
 
         [Fact]
-        public void CaclulateRateValueTest_WhenDataCorrect_ReturnDecimal()
+        public void CaclulateRateValue_WhenDataCorrect_ReturnDecimal()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());
@@ -65,7 +65,7 @@ namespace BankConverter.Tests
         }
 
         [Fact]
-        public void CaclulateRateValueTest_WhenFirstArgZero_ReturnException()
+        public void CaclulateRateValue_WhenFirstArgZero_ReturnException()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());
@@ -75,7 +75,7 @@ namespace BankConverter.Tests
         }
 
         [Fact]
-        public void CaclulateRateValueTest_WhenSecondZero_ReturnZero()
+        public void CaclulateRateValue_WhenSecondZero_ReturnZero()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());
@@ -88,7 +88,7 @@ namespace BankConverter.Tests
         }
 
         [Fact]
-        public void CaclulateRateValueTest_WhenAmountZero_ReturnZero()
+        public void CaclulateRateValue_WhenAmountZero_ReturnZero()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());
@@ -101,7 +101,7 @@ namespace BankConverter.Tests
         }
 
         [Fact]
-        public void CaclulateRateTest_WhenRateFromZero_ReturnException()
+        public void CaclulateRate_WhenRateFromZero_ReturnException()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());
@@ -112,7 +112,7 @@ namespace BankConverter.Tests
         }
 
         [Fact]
-        public void CaclulateRateTest_WhenRateToZero_ReturnZero()
+        public void CaclulateRate_WhenRateToZero_ReturnZero()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());
@@ -125,7 +125,7 @@ namespace BankConverter.Tests
         }
 
         [Fact]
-        public void CaclulateRateTest_WhenDataValid_ReturnDecimal()
+        public void CaclulateRate_WhenDataValid_ReturnDecimal()
         {
             //arrange
             _rateLogic = new RateLogic(MockHelper.GetDataLoadLogicWithMocks());

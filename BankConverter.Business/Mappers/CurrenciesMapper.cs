@@ -18,7 +18,7 @@ namespace BankConverter.Business.Mappers
             return result;
         }
 
-        private static GetAllCurrenciesResponseModel MapToViewModel(CurrencyItem rateItem)
+        public static GetAllCurrenciesResponseModel MapToViewModel(CurrencyItem rateItem)
         {
             return new GetAllCurrenciesResponseModel
             {
