@@ -1,38 +1,21 @@
-﻿@model InputRatesViewModel
-@{
-    ViewBag.Title = "Calculate";
-}
+﻿@model InputCalculateRatesViewModel
 
-<h2>Calculate</h2>
-<form id="calculateConversionRate">
+@using (Html.BeginForm("CalculatedRates", "Rates", FormMethod.Post,  new { enctype = "multipart/form-data" }))
+{
     <table>
         <tr>
             @Html.LabelFor(model => model.FirstCurrency, new { @class = "control-label col-md-2" })
-            @Html.DropDownListFor(model => model.FirstCurrency, new SelectList(Model.CurrenciesToSelect, "Value", "Text"), "- Please Select -")
+            @Html.DropDownListFor(model => model.FirstCurrency, new SelectList(Model.CurrenciesToSelect, "Value", "Text"))
         </tr>
         <tr>
             @Html.LabelFor(model => model.Value, new { @class = "control-label col-md-2" })
-            @Html.TextBoxFor(model => model.Value)
+            @Html.TextBoxFor(model => model.Value, new { @pattern = @"\d+" })
+            @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
         </tr>
         <tr>
             @Html.LabelFor(model => model.SecondCurrency, new { @class = "control-label col-md-2" })
-            @Html.DropDownListFor(model => model.SecondCurrency, new SelectList(Model.CurrenciesToSelect, "Value", "Text"), "- Please Select -")
+            @Html.DropDownListFor(model => model.SecondCurrency, new SelectList(Model.CurrenciesToSelect, "Value", "Text"))
         </tr>
     </table>
-    <input id="btnsubmit" type="button" value="Submit" />
-</form>  
-<script>
-
-    $(document).ready(function () {
-        $("#btnsubmit").click(function (e) {
-            var data = $("#calculateConversionRate").serialize();
-            $.ajax({
-                url: "/Rates/CalculateRates",
-                type: "POST",
-                dataType: 'json',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                data: data
-            });
-        });
-    });
-</script>
+    <input type="submit" value="Calculate" />
+}

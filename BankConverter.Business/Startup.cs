@@ -23,6 +23,7 @@ namespace BankConverter.Business
             services.AddControllers();
 
             services.AddScoped<IDataLoadLogic, DataLoadLogic>();
+            services.AddScoped<IRateLogic, RateLogic>();
 
             services.AddMemoryCache();
         }

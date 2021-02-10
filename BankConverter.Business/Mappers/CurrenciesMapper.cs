@@ -6,9 +6,9 @@ namespace BankConverter.Business.Mappers
 {
     public static class CurrenciesMapper
     {
-        public static List<GetAllCurrenciesViewModel> MapToViewModel(List<CurrencyItem> rateItems)
+        public static List<GetAllCurrenciesResponseModel> MapToViewModel(List<CurrencyItem> rateItems)
         {
-            var result = new List<GetAllCurrenciesViewModel>();
+            var result = new List<GetAllCurrenciesResponseModel>();
 
             foreach (var item in rateItems)
             {
@@ -18,12 +18,12 @@ namespace BankConverter.Business.Mappers
             return result;
         }
 
-        private static GetAllCurrenciesViewModel MapToViewModel(CurrencyItem rateItem)
+        private static GetAllCurrenciesResponseModel MapToViewModel(CurrencyItem rateItem)
         {
-            return new GetAllCurrenciesViewModel
+            return new GetAllCurrenciesResponseModel
             {
                 Currency = rateItem.Currency,
-                Value = rateItem.Value.ToString()
+                Value = rateItem.Value
             };
         }
     }

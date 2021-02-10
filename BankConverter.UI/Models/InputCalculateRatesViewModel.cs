@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace BankConverter.UI.Models
 {
-    public class InputRatesViewModel
+    public class InputCalculateRatesViewModel
     {
-        public List<GetAllRatesViewModel> Rates { get; set; }
+        public List<GetAllRatesResponseModel> Rates { get; set; }
 
         public IEnumerable<SelectListItem> CurrenciesToSelect { get; set; }
 

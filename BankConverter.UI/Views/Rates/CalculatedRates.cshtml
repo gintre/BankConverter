@@ -1,0 +1,11 @@
+﻿@model CalculateRatesResponseViewModel
+<h1>Calculated rates result</h1>
+<div>
+    <div>Result from @Model.FirtsCurrency to @Model.SecondCurrency and amount @Model.Amount is @Model.RateValue Rate is @Model.Rate</div>
+</div>
+<input id="calculateNewBtn" type="button" value="Calculate new" />
+<script type="text/javascript">
+    $('#calculateNewBtn').click(function () {
+        document.location = '@Url.Action("LoadRates","Rates")';
+    });
+</script>

@@ -1,9 +1,9 @@
 ﻿namespace BankConverter.Business.ViewModels
 {
-    public class GetAllCurrenciesViewModel
+    public class GetAllCurrenciesResponseModel
     {
         public string Currency { get; set; }
 
-        public string Value { get; set; }
+        public decimal Value { get; set; }
     }
 }

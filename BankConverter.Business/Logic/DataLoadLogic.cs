@@ -28,10 +28,16 @@ namespace BankConverter.Business.Logic
             _config = config;
         }
 
-        public async Task<List<GetAllCurrenciesViewModel>> LoadCurrencies()
+        public async Task<List<GetAllCurrenciesResponseModel>> GetCurrencies()
         {
                 var rates = await GetCurrenciesFromCache(ConfigurationConstants.CurrenciesCacheKey, GetUsersSemaphore, () => GetCurrenciesFromUrl());
                 return CurrenciesMapper.MapToViewModel(rates);
+        }
+
+        public async Task<CurrencyItem> GetCurrency(string currencyName)
+        {
+            var rates = await GetCurrenciesFromCache(ConfigurationConstants.CurrenciesCacheKey, GetUsersSemaphore, () => GetCurrenciesFromUrl());
+            return rates.FirstOrDefault(x => x.Currency == currencyName);
         }
 
         private async Task<List<CurrencyItem>> GetCurrenciesFromUrl()

@@ -20,7 +20,7 @@ namespace BankConverter.Business.Controllers
         {
             try
             {
-                var result = await _dataLoadLogic.LoadCurrencies();
+                var result = await _dataLoadLogic.GetCurrencies();
 
                 return Ok(result);
             }
